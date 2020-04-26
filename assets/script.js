@@ -1,5 +1,49 @@
 var gameTimer;
 var gameTime = 0;
+var questions = [
+    {
+        question: "Who is Quark's step-father?",
+        choices: {
+            A: "Lt. Worf",
+            B: "Rom",
+            C: "Grand Negus Zek",
+            D: "Liquidator Brunt"
+        },
+        correctAnswer: "C"
+    },
+    {
+        question: "What alien species is Lt. Worf?",
+        choices: {
+            A: "Vulcan",
+            B: "Klingon",
+            C: "Romulan",
+            D: "Betazoid"
+        },
+        correctAnswer: "B"
+    },
+    {
+        question: "When did Captain Sisko's wife die?",
+        choices: {
+            A: "At the Battle of Wolf 359",
+            B: "At their wedding",
+            C: "When she became a shape-shifter",
+            D: "When she lied about being human"
+        },
+        correctAnswer: "A"
+    },
+    {
+        question: "Who does Kira hate?",
+        choices: {
+            A: "Dr. Bashir",
+            B: "Lt. Worf",
+            C: "Jadzia Dax",
+            D: "Gul Dukat"
+        },
+        correctAnswer: "D"
+    },
+];
+var choicesText = document.querySelector("#todo-text");
+var choiceList = document.querySelector("#todo-list");
 // upon loading the document, the user is going to see the instructions to the game.
 // these instructions can just be part of the HTML. We'll wrap all of the instructions
 // in a div, with an id of #intro
@@ -8,9 +52,10 @@ var gameTime = 0;
 
 var quiz = document.getElementById("quiz");
 function generateQuestions(questions, quizContainer) {
+    console.log(questions)
     // we'll need a place to store the output and the answer choices
     var output = [];
-    var answers;
+    var choices;
 
     // for each question...
     for (var i = 0; i < questions.length; i++) {
@@ -19,16 +64,18 @@ function generateQuestions(questions, quizContainer) {
         choices = [];
 
         // for each available answer to this question...
-        for (letter in questions[i].answers) {
+        for (var i = 0; i < choices.length; i++) {
+            var choices = choices[i];
 
-            // ...add an html radio button
-            choices.push(
-                '<label>'
-                + '<input type="radio" name="question' + i + '" value="' + letter + '">'
-                + letter + ': '
-                + questions[i].answers[letter]
-                + '</label>'
-            );
+            var li = document.createElement("li");
+            li.textContent = quiz;
+            li.setAttribute("data-index", i);
+
+            var button = document.createElement("button");
+            button.textContent = "My Selection";
+
+            li.appendChild(button);
+            choicesList.appendChild(li);
         }
 
         // add this question and its answers to the output
@@ -44,7 +91,7 @@ function generateQuestions(questions, quizContainer) {
 //      - append the box to the document body
 $('body').append(questions);
 
-function showResults(questions, quizContainer, resultsContainer) {
+function showResults(questions, quizContainer) {
 
     // gather answer containers from our quiz
     var answerContainers = quizContainer.querySelectorAll('.answers');
@@ -85,23 +132,43 @@ generateQuestions(questions, quizContainer, resultsContainer, submitButton);
 var questions = [
     {
         question: "Who is Quark's step-father?",
-        choices: ["Lt. Worf", "Rom", "Grand Negus Zek", "Liquidator Brunt"],
-        correct: "C"
+        choices: {
+            A: "Lt. Worf",
+            B: "Rom",
+            C: "Grand Negus Zek",
+            D: "Liquidator Brunt"
+        },
+        correctAnswer: "C"
     },
     {
         question: "What alien species is Lt. Worf?",
-        choices: ["Vulcan", "Klingon", "Romulan", "Betazoid"],
-        correct: "B"
+        choices: {
+            A: "Vulcan",
+            B: "Klingon",
+            C: "Romulan",
+            D: "Betazoid"
+        },
+        correctAnswer: "B"
     },
     {
         question: "When did Captain Sisko's wife die?",
-        choices: ["At the Battle of Wolf 359", "At their wedding", "When she became a shape-shifter", "When she lied about being human"],
-        correct: "A"
+        choices: {
+            A: "At the Battle of Wolf 359",
+            B: "At their wedding",
+            C: "When she became a shape-shifter",
+            D: "When she lied about being human"
+        },
+        correctAnswer: "A"
     },
     {
         question: "Who does Kira hate?",
-        choices: ["Dr. Bashir", "Lt. Worf", "Jadzia Dax", "Gul Dukat"],
-        correct: "D"
+        choices: {
+            A: "Dr. Bashir",
+            B: "Lt. Worf",
+            C: "Jadzia Dax",
+            D: "Gul Dukat"
+        },
+        correctAnswer: "D"
     },
 ];
 generateQuestions(questions, quizContainer);

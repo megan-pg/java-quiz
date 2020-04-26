@@ -3,32 +3,17 @@ var gameTime = 0;
 var questions = [
     {
         question: "Who is Quark's step-father?",
-        choices: {
-            A: "Lt. Worf",
-            B: "Rom",
-            C: "Grand Negus Zek",
-            D: "Liquidator Brunt"
-        },
+        choices: ["Lt. Worf", "Rom", "Grand Negus Zek", "Liquidator Brunt"],
         correctAnswer: "C"
     },
     {
         question: "What alien species is Lt. Worf?",
-        choices: {
-            A: "Vulcan",
-            B: "Klingon",
-            C: "Romulan",
-            D: "Betazoid"
-        },
+        choices: ["Vulcan", "Klingon", "Romulan", "Betazoid"],
         correctAnswer: "B"
     },
     {
         question: "When did Captain Sisko's wife die?",
-        choices: {
-            A: "At the Battle of Wolf 359",
-            B: "At their wedding",
-            C: "When she became a shape-shifter",
-            D: "When she lied about being human"
-        },
+        choices: ["At the Battle of Wolf 359", "At their wedding", "When she became a shape-shifter", "When she lied about being human"],
         correctAnswer: "A"
     },
     {
@@ -42,84 +27,69 @@ var questions = [
         correctAnswer: "D"
     },
 ];
-var choicesText = document.querySelector("#todo-text");
-var choiceList = document.querySelector("#todo-list");
+var choicesText = document.querySelector("#quiz");
+var choices = document.querySelector("#choiceList");
 // upon loading the document, the user is going to see the instructions to the game.
 // these instructions can just be part of the HTML. We'll wrap all of the instructions
 // in a div, with an id of #intro
 
 // ***************************** START GAME ************************************
 
-var quiz = document.getElementById("quiz");
-function generateQuestions(questions, quizContainer) {
+var quiz = document.getElementById("#quiz");
+var choiceList = document.querySelector("#choiceList");
+
+function generateQuestions(questions) {
     console.log(questions)
+    console.log(choices)
     // we'll need a place to store the output and the answer choices
     var output = [];
     var choices;
 
     // for each question...
     for (var i = 0; i < questions.length; i++) {
-
+        console.log(questions.length)
         // first reset the list of answers
-        choices = [];
+        choices = [""];
 
         // for each available answer to this question...
-        for (var i = 0; i < choices.length; i++) {
-            var choices = choices[i];
+        for (letter in questions[i].choices) {
 
-            var li = document.createElement("li");
-            li.textContent = quiz;
-            li.setAttribute("data-index", i);
+            // ...add an html radio button
+            choices.push(
+                '<label>'
+                + '<button class="choiceList" name="question' + i + '" value="' + choices + '">'
+                + choices + ': '
+                + questions[i].choices
+                + '</label>'
+            );
 
-            var button = document.createElement("button");
-            button.textContent = "My Selection";
-
-            li.appendChild(button);
-            choicesList.appendChild(li);
         }
 
         // add this question and its answers to the output
         output.push(
             '<div class="question">' + questions[i].question + '</div>'
-            + '<div class="choice">' + choices.join('') + '</div>'
+            + '<button class="choices">' + choices.join('') + '</button>'
         );
     }
 
     // finally combine our output list into one string of html and put it on the page
     quizContainer.innerHTML = output.join('');
 }
+
 //      - append the box to the document body
 $('body').append(questions);
+$('body').append(choices);
 
 function showResults(questions, quizContainer) {
 
     // gather answer containers from our quiz
-    var answerContainers = quizContainer.querySelectorAll('.answers');
+    var answerContainers = quizContainer.querySelectorAll('.choicesList');
 
     // keep track of user's answers
     var userAnswer = '';
     var numCorrect = 0;
 
     // for each question...
-    for (var i = 0; i < questions.length; i++) {
-
-        // find selected answer
-        userAnswer = (answerContainers[i].querySelector('input[name=question' + i + ']:checked') || {}).value;
-
-        // if answer is correct
-        if (userAnswer === questions[i].correctAnswer) {
-            // add to the number of correct answers
-            numCorrect++;
-
-            // color the answers green
-            answerContainers[i].style.color = 'lightgreen';
-        }
-        // if answer is wrong or blank
-        else {
-            // color the answers red
-            answerContainers[i].style.color = 'red';
-        }
-    }
 }
 // show number of correct answers out of total
 
@@ -127,50 +97,6 @@ var quizContainer = document.getElementById('quiz');
 var resultsContainer = document.getElementById('results');
 var submitButton = document.getElementById('submit');
 
-
-generateQuestions(questions, quizContainer, resultsContainer, submitButton);
-var questions = [
-    {
-        question: "Who is Quark's step-father?",
-        choices: {
-            A: "Lt. Worf",
-            B: "Rom",
-            C: "Grand Negus Zek",
-            D: "Liquidator Brunt"
-        },
-        correctAnswer: "C"
-    },
-    {
-        question: "What alien species is Lt. Worf?",
-        choices: {
-            A: "Vulcan",
-            B: "Klingon",
-            C: "Romulan",
-            D: "Betazoid"
-        },
-        correctAnswer: "B"
-    },
-    {
-        question: "When did Captain Sisko's wife die?",
-        choices: {
-            A: "At the Battle of Wolf 359",
-            B: "At their wedding",
-            C: "When she became a shape-shifter",
-            D: "When she lied about being human"
-        },
-        correctAnswer: "A"
-    },
-    {
-        question: "Who does Kira hate?",
-        choices: {
-            A: "Dr. Bashir",
-            B: "Lt. Worf",
-            C: "Jadzia Dax",
-            D: "Gul Dukat"
-        },
-        correctAnswer: "D"
-    },
-];
 generateQuestions(questions, quizContainer);
 
 var lastQuestionIndex = questions.length - 1;
@@ -223,7 +149,6 @@ function saveScore(score) {
     // create a new score object with the three values that we want
     var scoreObject = {
         score: score,
-        numBoxes: numBoxes,
         time: gameTime,
     };
 
@@ -238,7 +163,7 @@ function saveScore(score) {
     localStorage.setItem('scores', scoresJSON);
 }
 
-// ************************** BOX CLICK ****************************************
+// ************************** FINAL ****************************************
 function endGame() {
     // timer needs to be stopped
     clearInterval(gameTimer);
@@ -251,8 +176,6 @@ function endGame() {
     saveScore(score);
 }
 
-
-$(document).on('click', '.box', clickBox);
 
 function playAgain() {
     // hide the score container
@@ -299,5 +222,40 @@ function viewScores() {
 // when the user clicks on #view-scores we need to:
 $('#view-scores').on('click', viewScores);
 
+// function generateQuestion(questions, quizContainer) {
 
+//     // we'll need a place to store the output and the answer choices
+//     var output = [];
+//     var answers;
+
+//     // for each question...
+//     for (var i = 0; i < questions.length; i++) {
+//         console.log(questions);
+//         // first reset the list of answers
+//         answers = [];
+
+//         // for each available answer to this question...
+//         for (letter in questions[i].answers) {
+
+//             // ...add an html radio button
+//             answers.push(
+//                 '<label>'
+//                 + '<input type="radio" name="question' + i + '" value="' + letter + '">'
+//                 + letter + ': '
+//                 + questions[i].answers[letter]
+//                 + '</label>'
+//             );
+
+//         }
+
+//         // add this question and its answers to the output
+//         output.push(
+//             '<div class="question">' + questions[i].question + '</div>'
+//             + '<div class="answers">' + answers.join('') + '</div>'
+//         );
+//     }
+
+//     // finally combine our output list into one string of html and put it on the page
+//     quizContainer.innerHTML = output.join('');
+// }
 

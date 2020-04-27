@@ -37,6 +37,9 @@ function hideShowQuiz() {
     }
 
 }
+
+var score = 0;
+
 // upon loading the document, the user is going to see the instructions to the game.
 // these instructions can just be part of the HTML. We'll wrap all of the instructions
 // in a div, with an id of #intro
@@ -60,33 +63,99 @@ function generateQuestions(questions) {
         choices = [];
 
         // for each available answer to this question...
-        for (correctAnswer in questions[i].choices) {
-
-            // ...add an html radio button
+        // for (correctAnswer in questions[i].choices) {
+        for (var choice = 0; choice < questions[i].choices.length; choice++) {
+            console.log(questions[i])
+            // if (questions[i].choices[choice] === questions[i].correctAnswer) {// ...add an html radio button
+            console.log(questions[i].choices[choice])
             choices.push(
-                '<button>'
+                '<button class="choices ' + i + '">'
                 //+ '<button class="choiceList" name="question' + i + '" value="' + choices + '">'
                 //+ choices + ': '
-                + questions[i].choices
+                + questions[i].choices[choice]
                 + '</button>'
             );
-            console.log(choices.push)
-
+            // }
         }
-
+        console.log(choices)
         // add this question and its answers to the output
         output.push(
             '<div class="question">' + questions[i].question + '</div>'
-            + '<button class="choices">' + choices.join('') + '</button>'
+            + choices.join('')
         );
     }
+    $("#quiz").html("")
+    $("#quiz").append(output)
 
-    // finally combine our output list into one string of html and put it on the page
-    quizContainer.innerHTML = output.join('');
+    $(".choices").on("click", function () {
+        //console.log($(this).text())
+        console.log($(this).hasClass("0"))
+        if ($(this).hasClass("0")) {
+            if (questions[0].correctAnswer === $(this).text()) {
+                alert("Correct!")
+                score++
+                console.log("correct")
+            }
+            else {
+                alert("Incorrect")
+                secondsLeft -= 10;
+            }
+        }
+
+        if ($(this).hasClass("1")) {
+            if (questions[1].correctAnswer === $(this).text()) {
+                alert("Correct!")
+                score++
+                console.log("correct")
+            }
+            else {
+                alert("Incorrect")
+                secondsLeft -= 10;
+            }
+
+        }
+
+        if ($(this).hasClass("2")) {
+            if (questions[2].correctAnswer === $(this).text()) {
+                alert("Correct!")
+                score++
+                console.log("correct")
+            }
+            else {
+                alert("Incorrect")
+                secondsLeft -= 10;
+            }
+
+        }
+
+        if ($(this).hasClass("3")) {
+            if (questions[3].correctAnswer === $(this).text()) {
+                alert("Correct!")
+                score++
+                console.log("correct")
+            }
+            else {
+                alert("Incorrect")
+                secondsLeft -= 10;
+            }
+
+        }
+        if (score >= 4) {
+            endGame();
+        }
+    })
+    //     <div id="quiz">
+    //     <p>Pick One:</p>
+    //     <ul id="choicesList"></ul>
+    // </div>
 }
 
+// finally combine our output list into one string of html and put it on the page
+//quizContainer.innerHTML = output.join('');
+//}
+
 //      - append the box to the document body
-$('body').append(questions);
+// $('body').append(questions);
 //$('body').append(choices);
 
 function showResults(questions, quizContainer) {
@@ -112,29 +181,32 @@ var runningQuestionIndex = 0;
 
 
 //*****************Time******************************* */
-var timeElement = document.querySelector("time");
+var timeElement = document.querySelector(".time");
 var countDown = document.getElementById(".timer");
 gameTime = 0;
 var secondsLeft = 60;
+
 function createTimer() {
     // store the current time in a variable called gameTime, which is going to default to 0
 
     // create a setInterval, set to 1000ms (1 second), and assign that to a variable called gameTimer
     gameTimer = setInterval(function () {
         // increment the gameTime by 1 (gameTime++)
-        secondsleft--;
-        timeElement.textConent = secondsleft;
-        if (secondsLeft === 0) {
-            clearInterval(gameTime);
-            countDown.appendChild(timeElement);
+        secondsLeft--;
+        timeElement.textContent = secondsLeft;
+        if (secondsLeft <= 0) {
+            clearInterval(gameTimer);
+            //countDown.appendChild(timeElement);
+            endGame();
         }
-    }, 100);
+    }, 1000);
     console.log(gameTime)
 }
 
 // we need a start button, with an id of #start-button. We'll put this in the #intro div
 // when the #start-button is clicked, we need to start the game:
 function startGame() {
+    $("#quiz").css("display", "block")
     // generate 10-20 boxes, and randomly place them on the document
     generateQuestions(questions);
     // start a timer to keep track of how long the user has taken to finish the game
@@ -144,6 +216,7 @@ function startGame() {
 }
 
 $('#start-button').on('click', startGame);
+
 
 
 function calculateScore() {
@@ -168,7 +241,7 @@ function saveScore(score) {
     // create a new score object with the three values that we want
     var scoreObject = {
         score: score,
-        time: gameTime,
+        time: 60 - secondsLeft,
     };
 
     // add this score object to the current scores
@@ -178,22 +251,26 @@ function saveScore(score) {
     scores.push(scoreObject);
     // JSON.stringify to turn our array into a string
     var scoresJSON = JSON.stringify(scores);
+    console.log(scoresJSON)
     // store our new JSON string in local store
     localStorage.setItem('scores', scoresJSON);
 }
 
 // ************************** FINAL ****************************************
 function endGame() {
-    // timer needs to be stopped
-    clearInterval(gameTimer);
-    // calculate the users score
-    var score = calculateScore();
-    // display the users score
+
+
+    // // timer needs to be stopped
+    // clearInterval(gameTimer);
+    // // calculate the users score
+    // var score = calculateScore();
+    // // display the users score
     $('#score').text(score);
-    $('#score-container').show();
-    // store the score, number of boxes, and the time in local storage
+    // $('#score-container').show();
+    // // store the score, number of boxes, and the time in local storage
     saveScore(score);
 }
+
 
 
 function playAgain() {

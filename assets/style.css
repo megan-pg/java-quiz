@@ -5,15 +5,13 @@
     border: 2px solid black;
     background-color: blue;
     position: absolute;
+    
 }
 
-#score-container {
-    display: none;
+#quiz {
+  display: none;
 }
 
-#score-list {
-    display: none;
-}
 
 body {
     font-size: 24px;
@@ -46,7 +44,6 @@ body {
 
 #view-scores {
     border: 2px solid black;
-    color: white;
     background-color: blueviolet;
     font-size: 32px;
     display: block;

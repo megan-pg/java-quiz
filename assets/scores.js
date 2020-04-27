@@ -15,6 +15,12 @@ $(function () {
             return JSON.parse(scores);
         }
 
+        for (var i = 0; i > scorePotatoes[0].score + " : " + scorePotatoes[0].time.length; i++) {
+            console.log(scorePotatoes.length)
+            scorePotatoes.push();
+        }
         return [];
     }
+
+
 })

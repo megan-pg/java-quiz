@@ -266,6 +266,3 @@ function playAgain() {
 $('#play-again').on('click', playAgain);
 //   1. reset the game
 //   2. start the game
-
-// ************************** VIEW SCORES **************************************
-

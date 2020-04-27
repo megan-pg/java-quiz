@@ -25,18 +25,8 @@ var questions = [
 var choicesText = document.querySelector("#quiz");
 var choices = document.querySelector("#choiceList");
 
-//$('#quiz').hide();
 
-function hideShowQuiz() {
-    console.log(hideShowQuiz)
-    var quizDisplay = document.getElementById("quiz");
-    if (quizDisplay.style.display === "none") {
-        startGame.style.display = "block";
-    } else {
-        quiz.style.display = "none";
-    }
 
-}
 
 var score = 0;
 
@@ -70,8 +60,7 @@ function generateQuestions(questions) {
             console.log(questions[i].choices[choice])
             choices.push(
                 '<button class="choices ' + i + '">'
-                //+ '<button class="choiceList" name="question' + i + '" value="' + choices + '">'
-                //+ choices + ': '
+
                 + questions[i].choices[choice]
                 + '</button>'
             );
@@ -144,19 +133,9 @@ function generateQuestions(questions) {
             endGame();
         }
     })
-    //     <div id="quiz">
-    //     <p>Pick One:</p>
-    //     <ul id="choicesList"></ul>
-    // </div>
+
 }
 
-// finally combine our output list into one string of html and put it on the page
-//quizContainer.innerHTML = output.join('');
-//}
-
-//      - append the box to the document body
-// $('body').append(questions);
-//$('body').append(choices);
 
 function showResults(questions, quizContainer) {
 
